@@ -83,7 +83,6 @@ const update = async (id, data) => {
             .findOneAndUpdate(
                 { _id: ObjectId(id) },
                 { $set: updateData },
-                //{ returnDocument: "after" }
                 { returnDocument: "after" }
             );
         return result.value;

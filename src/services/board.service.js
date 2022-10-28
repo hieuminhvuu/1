@@ -1,4 +1,5 @@
 import { BoardModel } from "*/models/board.model";
+import { UserModel } from "*/models/user.model";
 import { cloneDeep } from "lodash";
 
 const createNew = async (data) => {
@@ -10,6 +11,12 @@ const createNew = async (data) => {
         //push notification
         //do something ...
         //transform data
+
+        //Update boardOrder Array in user collection
+        await UserModel.pushBoardOrder(
+            getNewBoard.userId.toString(),
+            getNewBoard._id.toString()
+        );
         return getNewBoard;
     } catch (error) {
         throw new Error(error);
