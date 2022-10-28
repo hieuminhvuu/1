@@ -1,17 +1,16 @@
 import Joi from "joi";
 import { ObjectId } from "mongodb";
 import { getDB } from "*/config/mongodb";
-import { BoardModel } from "./board.model";
-import { ColumnModel } from "./column.model";
-import { CardModel } from "./card.model";
 
 const userCollectionName = "users";
 const userCollectionSchema = Joi.object({
     firstName: Joi.string().required().min(1).max(20).trim(),
     lastName: Joi.string().required().min(1).max(20).trim(),
     email: Joi.string().required().min(5).max(30).trim(),
-    password: Joi.string().required().min(1).max(30).trim(),
-    avatar: Joi.string().default(null),
+    password: Joi.string().required().min(6).trim(),
+    avatar: Joi.string().default(
+        "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
+    ),
     boardOrder: Joi.array().items(Joi.string()).default([]),
     createdAt: Joi.date().timestamp().default(Date.now()),
     updatedAt: Joi.date().timestamp().default(null),

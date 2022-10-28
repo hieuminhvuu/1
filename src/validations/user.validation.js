@@ -6,7 +6,7 @@ const createNew = async (req, res, next) => {
         firstName: Joi.string().required().min(1).max(20).trim(),
         lastName: Joi.string().required().min(1).max(20).trim(),
         email: Joi.string().required().min(5).max(30).trim(),
-        password: Joi.string().required().min(1).max(30).trim(),
+        password: Joi.string().required().min(6).trim(),
     });
     try {
         await condition.validateAsync(req.body, { abortEarly: false });

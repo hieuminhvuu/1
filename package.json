@@ -24,10 +24,12 @@
   "homepage": "https://github.com/hieuminhvuu/1#readme",
   "dependencies": {
     "@babel/runtime": "^7.19.0",
+    "argon2": "^0.30.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "joi": "^17.6.2",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
