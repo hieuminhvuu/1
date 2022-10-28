@@ -3,6 +3,7 @@ import { HttpStatusCode } from "*/utilities/constants";
 import { boardRoutes } from "./board.route";
 import { columnRoutes } from "./column.route";
 import { cardRoutes } from "./card.route";
+import { authRoutes } from "./auth.route";
 
 const router = express.Router();
 
@@ -12,6 +13,11 @@ const router = express.Router();
 router.get("/status", (req, res) =>
     res.status(HttpStatusCode.OK).json({ status: "Ok" })
 );
+
+/**
+ * Auth APIs
+ */
+router.use("/auth", authRoutes);
 
 /**
  * Board APIs
