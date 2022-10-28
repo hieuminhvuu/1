@@ -1,7 +1,7 @@
 import { getDB } from "*/config/mongodb";
 import { UserModel, userCollectionName } from "*/models/user.model";
 import argon2 from "argon2";
-import { HttpStatusCode } from "*/utilities/constants";
+import jwt from "jsonwebtoken";
 
 const createNew = async (data) => {
     try {
@@ -30,6 +30,46 @@ const createNew = async (data) => {
     }
 };
 
-//
+const login = async (data) => {
+    try {
+        const { email, password } = data;
 
-export const UserService = { createNew };
+        // Check for existing user
+        const user = await getDB()
+            .collection("users")
+            //.collection(userCollectionName)
+            .findOne({ email });
+        if (!user) {
+            return {
+                result: false,
+                massage: "Email is not registered !",
+                data: "",
+            };
+        }
+
+        // User found -> check password
+        const passwordValid = await argon2.verify(user.password, password);
+        if (!passwordValid) {
+            return {
+                result: false,
+                massage: "Password incorrect ",
+                data: "",
+            };
+        }
+
+        const token = jwt.sign(
+            { userId: user._id },
+            process.env.ACCESS_TOKEN_SECRET
+        );
+
+        return {
+            result: true,
+            massage: "Login successfully !",
+            data: { user, token },
+        };
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+export const UserService = { createNew, login };
