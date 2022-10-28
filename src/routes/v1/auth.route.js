@@ -15,6 +15,6 @@ router
     .route("/register")
     .post(UserValidation.createNew, UserController.createNew);
 
-//router.route("/login").post(async (req, res) => {});
+router.route("/login").post(UserValidation.login, UserController.login);
 
 export const authRoutes = router;
