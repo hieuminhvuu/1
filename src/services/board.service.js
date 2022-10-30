@@ -52,6 +52,18 @@ const getFullBoard = async (boardId) => {
     }
 };
 
+const getAllBoard = async (req) => {
+    try {
+        const board = await BoardModel.getAllBoard(req);
+        if (!board) {
+            throw new Error("Board not found!");
+        }
+        return board;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 const update = async (id, data) => {
     try {
         const updateData = {
@@ -68,4 +80,4 @@ const update = async (id, data) => {
     }
 };
 
-export const BoardService = { createNew, getFullBoard, update };
+export const BoardService = { createNew, getFullBoard, update, getAllBoard };

@@ -1,14 +1,18 @@
 import express from "express";
 import { BoardController } from "*/controllers/board.controller";
 import { BoardValidation } from "*/validations/board.validation";
+import { verifyToken } from "*/middlewares/auth";
 
 const router = express.Router();
 
-router.route("/").post(BoardValidation.createNew, BoardController.createNew);
+router
+    .route("/")
+    .post(BoardValidation.createNew, verifyToken, BoardController.createNew)
+    .get(verifyToken, BoardController.getAllBoard);
 
 router
     .route("/:id")
-    .get(BoardController.getFullBoard)
-    .put(BoardValidation.update, BoardController.update);
+    .get(verifyToken, BoardController.getFullBoard)
+    .put(BoardValidation.update, verifyToken, BoardController.update);
 
 export const boardRoutes = router;

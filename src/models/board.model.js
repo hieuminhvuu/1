@@ -79,7 +79,6 @@ const getFullBoard = async (boardId) => {
                         _destroy: false,
                     },
                 },
-                // { $addFields: {_id: { $toString: "$_id" }, }, },
                 {
                     $lookup: {
                         from: ColumnModel.columnCollectionName,
@@ -99,6 +98,26 @@ const getFullBoard = async (boardId) => {
             ])
             .toArray();
         return result[0] || {};
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const getAllBoard = async (req) => {
+    try {
+        const result = await getDB()
+            .collection(boardCollectionName)
+            .aggregate([
+                {
+                    $match: {
+                        userId: ObjectId(req.userId),
+                        _destroy: false,
+                    },
+                },
+            ])
+            .toArray();
+        console.log(result);
+        return result;
     } catch (error) {
         throw new Error(error);
     }
@@ -131,4 +150,5 @@ export const BoardModel = {
     getFullBoard,
     update,
     findOneById,
+    getAllBoard,
 };
