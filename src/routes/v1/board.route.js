@@ -1,7 +1,7 @@
 import express from "express";
 import { BoardController } from "*/controllers/board.controller";
 import { BoardValidation } from "*/validations/board.validation";
-import { verifyToken } from "*/middlewares/auth";
+import { verifyToken } from "*/middlewares/auth.middleware";
 
 const router = express.Router();
 

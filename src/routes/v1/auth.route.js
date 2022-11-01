@@ -1,6 +1,7 @@
 import express from "express";
 import { UserController } from "*/controllers/user.controller";
 import { UserValidation } from "*/validations/user.validation";
+import { verifyToken } from "../../middlewares/auth.middleware";
 
 const router = express.Router();
 
@@ -10,6 +11,8 @@ const router = express.Router();
  * Login
  * After login, show all board
  */
+
+router.route("/").get(verifyToken, UserController.check);
 
 router
     .route("/register")

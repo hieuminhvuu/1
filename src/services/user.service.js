@@ -3,6 +3,31 @@ import { UserModel, userCollectionName } from "*/models/user.model";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 
+const check = async (data) => {
+    try {
+        let success = false;
+        const result = await getDB()
+            .collection("users")
+            //.collection(userCollectionName)
+            .findOne({ _id: ObjectId(data.id) })
+            .select("-password");
+        if (!result) {
+            return {
+                success: success,
+                massage: "User not found!",
+            };
+        }
+        success = true;
+        return {
+            success: success,
+            massage: "User found.",
+            result,
+        };
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 const createNew = async (data) => {
     try {
         const result = await getDB()
@@ -33,7 +58,7 @@ const createNew = async (data) => {
 const login = async (data) => {
     try {
         const { email, password } = data;
-
+        let success = false;
         // Check for existing user
         const user = await getDB()
             .collection("users")
@@ -41,7 +66,7 @@ const login = async (data) => {
             .findOne({ email });
         if (!user) {
             return {
-                result: false,
+                success: success,
                 massage: "Email is not registered !",
                 data: "",
             };
@@ -51,11 +76,12 @@ const login = async (data) => {
         const passwordValid = await argon2.verify(user.password, password);
         if (!passwordValid) {
             return {
-                result: false,
+                success: success,
                 massage: "Password incorrect ",
                 data: "",
             };
         }
+        success = true;
 
         const token = jwt.sign(
             { userId: user._id },
@@ -63,7 +89,7 @@ const login = async (data) => {
         );
 
         return {
-            result: true,
+            success: success,
             massage: "Login successfully !",
             data: { user, token },
         };
@@ -72,4 +98,4 @@ const login = async (data) => {
     }
 };
 
-export const UserService = { createNew, login };
+export const UserService = { createNew, login, check };
