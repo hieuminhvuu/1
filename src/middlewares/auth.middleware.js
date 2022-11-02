@@ -9,7 +9,7 @@ export const verifyToken = (req, res, next) => {
         if (!token) {
             return res
                 .status(HttpStatusCode.UNAUTHORIZED)
-                .json({ success: false, massage: "Access token not found!" });
+                .json({ success: false, message: "Access token not found!" });
         }
 
         try {
@@ -20,12 +20,12 @@ export const verifyToken = (req, res, next) => {
             console.log(error);
             return res
                 .status(HttpStatusCode.FORBIDDEN)
-                .json({ success: false, massage: "Invalid token!" });
+                .json({ success: false, message: "Invalid token!" });
         }
     } catch (error) {
         console.log(error);
         return res
             .status(HttpStatusCode.INTERNAL_SERVER)
-            .json({ success: false, massage: error.massage });
+            .json({ success: false, message: error.message });
     }
 };

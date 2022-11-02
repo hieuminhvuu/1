@@ -9,19 +9,16 @@ const check = async (data) => {
         const result = await getDB()
             .collection("users")
             //.collection(userCollectionName)
-            .findOne({ _id: ObjectId(data.id) })
-            .select("-password");
+            .findOne({ email: data.email });
         if (!result) {
             return {
                 success: success,
-                massage: "User not found!",
+                message: "User not found!",
             };
         }
         success = true;
         return {
-            success: success,
-            massage: "User found.",
-            result,
+            ...result,
         };
     } catch (error) {
         throw new Error(error);
@@ -37,7 +34,8 @@ const createNew = async (data) => {
 
         if (result) {
             return {
-                message: "Email is already taken",
+                success: false,
+                message: "Email is already taken!",
             };
         }
         const hashedPassword = await argon2.hash(data.password);
@@ -49,7 +47,7 @@ const createNew = async (data) => {
         const getNewUser = await UserModel.findOneById(
             createdUser.insertedId.toString()
         );
-        return getNewUser;
+        return { message: "Successfully!", ...getNewUser };
     } catch (error) {
         throw new Error(error);
     }
@@ -67,7 +65,7 @@ const login = async (data) => {
         if (!user) {
             return {
                 success: success,
-                massage: "Email is not registered !",
+                message: "Email is not registered !",
                 data: "",
             };
         }
@@ -77,7 +75,7 @@ const login = async (data) => {
         if (!passwordValid) {
             return {
                 success: success,
-                massage: "Password incorrect ",
+                message: "Password incorrect ",
                 data: "",
             };
         }
@@ -90,8 +88,9 @@ const login = async (data) => {
 
         return {
             success: success,
-            massage: "Login successfully !",
-            data: { user, token },
+            message: "Login successfully !",
+            user,
+            token,
         };
     } catch (error) {
         throw new Error(error);

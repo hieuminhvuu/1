@@ -12,8 +12,9 @@ const createNew = async (req, res, next) => {
         await condition.validateAsync(req.body, { abortEarly: false });
         next();
     } catch (error) {
-        res.status(HttpStatusCode.BAD_REQUEST).json({
-            errors: new Error(error).message,
+        return res.status(HttpStatusCode.BAD_REQUEST).json({
+            success: false,
+            message: error.message,
         });
     }
 };
@@ -28,7 +29,8 @@ const login = async (req, res, next) => {
         next();
     } catch (error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({
-            errors: new Error(error).message,
+            success: false,
+            message: error.message,
         });
     }
 };
