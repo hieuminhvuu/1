@@ -27,7 +27,7 @@ const getFullBoard = async (req, res) => {
 const getAllBoard = async (req, res) => {
     try {
         const result = await BoardService.getAllBoard(req);
-        res.status(HttpStatusCode.OK).json(result);
+        res.status(HttpStatusCode.OK).json({ success: true, boards: result });
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
             errors: error.message,

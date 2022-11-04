@@ -116,7 +116,6 @@ const getAllBoard = async (req) => {
                 },
             ])
             .toArray();
-        console.log(result);
         return result;
     } catch (error) {
         throw new Error(error);

@@ -2,6 +2,7 @@ import { getDB } from "*/config/mongodb";
 import { UserModel, userCollectionName } from "*/models/user.model";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
+import { ObjectId } from "mongodb";
 
 const check = async (data) => {
     try {
@@ -9,7 +10,7 @@ const check = async (data) => {
         const result = await getDB()
             .collection("users")
             //.collection(userCollectionName)
-            .findOne({ email: data.email });
+            .findOne({ _id: ObjectId(data.userId) });
         if (!result) {
             return {
                 success: success,

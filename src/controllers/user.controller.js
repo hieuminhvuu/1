@@ -3,7 +3,7 @@ import { UserService } from "*/services/user.service";
 
 const check = async (req, res) => {
     try {
-        const user = await UserService.check(req.body);
+        const user = await UserService.check(req);
         res.status(HttpStatusCode.OK).json({ success: true, user });
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
