@@ -37,10 +37,18 @@ const getFullBoard = async (boardId) => {
             (column) => !column._destroy
         );
         // Add card to each column
+        // transformBoard.columns.forEach((column) => {
+        //     column.cards = transformBoard.cards.filter(
+        //         (c) => c.columnId.toString() === column._id.toString()
+        //     );
+        // });
         transformBoard.columns.forEach((column) => {
-            column.cards = transformBoard.cards.filter(
-                (c) => c.columnId.toString() === column._id.toString()
-            );
+            column.cards = transformBoard.cards.filter((c) => {
+                return (
+                    c.columnId.toString() === column._id.toString() &&
+                    c._destroy === false
+                );
+            });
         });
         // Sort columns by columnOrder, sort cards by cardOrder, this step will pass to frontend DEV
         // Remove cards data from boards
