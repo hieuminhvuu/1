@@ -8,7 +8,7 @@ import { CardModel } from "./card.model";
 const boardCollectionName = "boards";
 const boardCollectionSchema = Joi.object({
     userId: Joi.string().required(),
-    title: Joi.string().required().min(3).max(20).trim(),
+    title: Joi.string().required().min(1).max(20).trim(),
     columnOrder: Joi.array().items(Joi.string()).default([]),
     createdAt: Joi.date().timestamp().default(Date.now()),
     updatedAt: Joi.date().timestamp().default(null),
