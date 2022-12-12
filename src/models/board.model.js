@@ -48,6 +48,17 @@ const createNew = async (data) => {
     }
 };
 
+const deleteBoard = async (data) => {
+    try {
+        const result = await getDB()
+            .collection(boardCollectionName)
+            .findOneAndDelete({ _id: ObjectId(data.id) });
+        return result.value;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 /**
  *
  * @param {string} boardId
@@ -150,4 +161,5 @@ export const BoardModel = {
     update,
     findOneById,
     getAllBoard,
+    deleteBoard,
 };

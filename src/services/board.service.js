@@ -23,6 +23,20 @@ const createNew = async (data) => {
     }
 };
 
+const deleteBoard = async (data) => {
+    try {
+        const deletedBoard = await BoardModel.deleteBoard(data);
+        // Delete board from boardOrder
+        await UserModel.deleteBoardFromBoardOrder(
+            deletedBoard.userId.toString(),
+            deletedBoard._id.toString()
+        );
+        return deletedBoard;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 const getFullBoard = async (boardId) => {
     try {
         const board = await BoardModel.getFullBoard(boardId);
@@ -88,4 +102,10 @@ const update = async (id, data) => {
     }
 };
 
-export const BoardService = { createNew, getFullBoard, update, getAllBoard };
+export const BoardService = {
+    createNew,
+    getFullBoard,
+    update,
+    getAllBoard,
+    deleteBoard,
+};
