@@ -68,9 +68,25 @@ const pushBoardOrder = async (userId, boardId) => {
     }
 };
 
+const deleteBoardFromBoardOrder = async (userId, boardId) => {
+    try {
+        const result = await getDB()
+            .collection(userCollectionName)
+            .findOneAndUpdate(
+                { _id: ObjectId(userId) },
+                { $pull: { boardOrder: boardId } },
+                { returnDocument: "after" }
+            );
+        return result.value;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
 export const UserModel = {
     userCollectionName,
     createNew,
     pushBoardOrder,
     findOneById,
+    deleteBoardFromBoardOrder,
 };
