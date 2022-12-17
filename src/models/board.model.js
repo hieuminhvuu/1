@@ -9,6 +9,9 @@ const boardCollectionName = "boards";
 const boardCollectionSchema = Joi.object({
     userId: Joi.string().required(),
     title: Joi.string().required().min(1).max(20).trim(),
+    cover: Joi.string().default(
+        "https://www.gamersdecide.com/sites/default/files/styles/news_images/public/3307.jpeg"
+    ),
     columnOrder: Joi.array().items(Joi.string()).default([]),
     createdAt: Joi.date().timestamp().default(Date.now()),
     updatedAt: Joi.date().timestamp().default(null),
@@ -53,6 +56,12 @@ const deleteBoard = async (data) => {
         const result = await getDB()
             .collection(boardCollectionName)
             .findOneAndDelete({ _id: ObjectId(data.id) });
+        await getDB()
+            .collection("columns")
+            .deleteMany({ boardId: ObjectId(data.id) });
+        await getDB()
+            .collection("cards")
+            .deleteMany({ boardId: ObjectId(data.id) });
         return result.value;
     } catch (error) {
         throw new Error(error);
