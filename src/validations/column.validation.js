@@ -4,7 +4,7 @@ import { HttpStatusCode } from "*/utilities/constants";
 const createNew = async (req, res, next) => {
     const condition = Joi.object({
         boardId: Joi.string().required(),
-        title: Joi.string().required().min(3).max(20).trim(),
+        title: Joi.string().required().min(1).max(20).trim(),
     });
     try {
         await condition.validateAsync(req.body, { abortEarly: false });
@@ -18,7 +18,7 @@ const createNew = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     const condition = Joi.object({
-        title: Joi.string().min(3).max(20).trim(),
+        title: Joi.string().min(1).max(20).trim(),
     });
     try {
         await condition.validateAsync(req.body, {

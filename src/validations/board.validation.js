@@ -34,7 +34,7 @@ const deleteBoard = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     const condition = Joi.object({
-        title: Joi.string().required().min(3).max(20).trim(),
+        title: Joi.string().required().min(1).max(20).trim(),
     });
     try {
         await condition.validateAsync(req.body, {
