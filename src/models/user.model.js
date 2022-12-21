@@ -8,9 +8,8 @@ const userCollectionSchema = Joi.object({
     lastName: Joi.string().required().min(1).max(20).trim(),
     email: Joi.string().required().min(5).max(30).trim(),
     password: Joi.string().required().min(6).trim(),
-    avatar: Joi.string().default(
-        "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
-    ),
+    sex: Joi.number().default(0),
+    bio: Joi.string().default("Hello World!"),
     boardOrder: Joi.array().items(Joi.string()).default([]),
     createdAt: Joi.date().timestamp().default(Date.now()),
     updatedAt: Joi.date().timestamp().default(null),
@@ -43,6 +42,24 @@ const createNew = async (data) => {
             .collection(userCollectionName)
             .insertOne(insertValue);
         return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const update = async (id, data) => {
+    try {
+        const insertValue = {
+            ...data,
+        };
+        const result = await getDB()
+            .collection(userCollectionName)
+            .findOneAndUpdate(
+                { _id: ObjectId(id) },
+                { $set: insertValue },
+                { returnDocument: "after" }
+            );
+        return result.value;
     } catch (error) {
         throw new Error(error);
     }
@@ -89,4 +106,5 @@ export const UserModel = {
     pushBoardOrder,
     findOneById,
     deleteBoardFromBoardOrder,
+    update,
 };

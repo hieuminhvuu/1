@@ -5,14 +5,11 @@ import { verifyToken } from "../../middlewares/auth.middleware";
 
 const router = express.Router();
 
-/**
- * - To do
- * Register
- * Login
- * After login, show all board
- */
-
 router.route("/").get(verifyToken, UserController.check);
+
+router
+    .route("/:id")
+    .put(UserValidation.update, verifyToken, UserController.update);
 
 router
     .route("/register")
