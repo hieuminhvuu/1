@@ -98,4 +98,13 @@ const login = async (data) => {
     }
 };
 
-export const UserService = { createNew, login, check };
+const update = async (id, data) => {
+    const updateUser = {
+        ...data,
+        updatedAt: Date.now(),
+    };
+    const updatedUser = await UserModel.update(id, updateUser);
+    return updatedUser;
+};
+
+export const UserService = { createNew, login, check, update };
