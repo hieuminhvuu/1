@@ -9,9 +9,7 @@ const boardCollectionName = "boards";
 const boardCollectionSchema = Joi.object({
     userId: Joi.string().required(),
     title: Joi.string().required().min(1).max(20).trim(),
-    cover: Joi.string().default(
-        "https://www.gamersdecide.com/sites/default/files/styles/news_images/public/3307.jpeg"
-    ),
+    cover: Joi.number(),
     columnOrder: Joi.array().items(Joi.string()).default([]),
     createdAt: Joi.date().timestamp().default(Date.now()),
     updatedAt: Joi.date().timestamp().default(null),
@@ -22,6 +20,10 @@ const validateSchema = async (data) => {
     return await boardCollectionSchema.validateAsync(data, {
         abortEarly: false,
     });
+};
+
+const randomNumber = (max, min) => {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 const findOneById = async (id) => {
@@ -37,9 +39,11 @@ const findOneById = async (id) => {
 
 const createNew = async (data) => {
     try {
+        const cover = randomNumber(9, 0);
         const validatedValue = await validateSchema(data);
         const insertValue = {
             ...validatedValue,
+            cover: cover,
             userId: ObjectId(validatedValue.userId),
         };
         const result = await getDB()
